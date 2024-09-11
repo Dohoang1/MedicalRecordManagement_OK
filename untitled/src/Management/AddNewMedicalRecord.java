@@ -97,6 +97,10 @@ public class AddNewMedicalRecord {
         while (true) {
             System.out.print(prompt + " (dd/MM/yyyy): ");
             String dateStr = scanner.nextLine();
+            if (!dateStr.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                System.out.println("Định dạng ngày không hợp lệ. Vui lòng nhập theo định dạng dd/MM/yyyy.");
+                continue;
+            }
             try {
                 Date date = sdf.parse(dateStr);
                 if (startDate != null) {
@@ -106,9 +110,17 @@ public class AddNewMedicalRecord {
                         continue;
                     }
                 }
+                String[] parts = dateStr.split("/");
+                int day = Integer.parseInt(parts[0]);
+                int month = Integer.parseInt(parts[1]);
+                int year = Integer.parseInt(parts[2]);
+                if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > 9999) {
+                    System.out.println("Ngày, tháng, hoặc năm không hợp lệ. Vui lòng nhập lại.");
+                    continue;
+                }
                 return dateStr;
             } catch (ParseException e) {
-                System.out.println("Định dạng ngày không hợp lệ. Vui lòng nhập lại.");
+                System.out.println("Ngày không hợp lệ. Vui lòng nhập lại.");
             }
         }
     }
